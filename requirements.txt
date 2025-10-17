@@ -1,0 +1,16 @@
+beautifulsoup4==4.14.2
+dateparser==1.2.2
+dj_database_url==3.0.1
+Django==5.2.7
+djangorestframework==3.16.1
+playwright==1.55.0
+python-dotenv==1.1.1
+pytz==2025.2
+Requests==2.32.5
+urllib3==2.5.0
+psycopg[binary]==3.2.10
+gunicorn
+playwright
+whitenoise
+markdown>=3.3     # opcjonalnie, dla przeglądalnego API DRF
+pygments>=2.7

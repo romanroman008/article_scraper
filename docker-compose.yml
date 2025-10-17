@@ -1,0 +1,70 @@
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: app_db
+    environment:
+      # ⬅️ Zostaw domyślne lub ustaw w .env. Jeśli w .env wpiszesz wartości,
+      #    to te domyślne (po :-) nie będą użyte.
+      POSTGRES_DB: ${POSTGRES_DB:-app}         # 📌 Nazwa bazy. Skąd?: Twoja decyzja → .env
+      POSTGRES_USER: ${POSTGRES_USER:-app}     # 📌 Użytkownik bazy. Skąd?: Twoja decyzja → .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app} # 📌 Hasło do bazy. Skąd?: Twoja decyzja → .env (NIE commituj)
+    volumes:
+      - pgdata:/var/lib/postgresql/data        # 📌 Miejsce na dane Postgresa (persist)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+
+
+  web:
+    build: .                                   # 📌 Jeśli Dockerfile nie jest w root, zmień ścieżkę.
+    container_name: app_web
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        gunicorn article_scraper.wsgi:application --bind 0.0.0.0:8000 --workers 3
+      "
+    env_file:
+      - .env                                   # 📌 Uzupełnij wg wzoru poniżej
+    environment:
+      # Jeśli nie używasz DATABASE_URL w settings, możesz pominąć to i czytać POSTGRES_*.
+      # DATABASE_URL format: postgresql://USER:PASS@HOST:PORT/DBNAME
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@db:5432/${POSTGRES_DB:-app}}
+      #                                                                                           ^ (poprawione: jedna } na końcu)
+      # ⬅️ Skąd?: Z .env (polecam użyć dj-database-url w settings.py)
+    ports:
+      - "8000:8000"                            # ⬅️ Zmień lewą stronę (host) jeśli chcesz inny port lokalny.
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app                                 # ⬅️ Dev: hot-reload z lokalnego katalogu. Prod: zwykle USUŃ.
+    restart: unless-stopped
+
+  scraper:
+    build: .
+    container_name: app_scraper
+    command: bash -c "python manage.py scrape"
+    #                       ^^^^^^
+    # ⬅️ Upewnij się, że nazwa komendy to właśnie "scrape".
+    #    Skąd?: Twój management command w Django (app/management/commands/scrape.py).
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@db:5432/${POSTGRES_DB:-app}}
+      RUN_MIGRATIONS: "1"
+      # ⬅️ Jak wyżej — z .env / dj-database-url
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ["scrape"]                        # ⬅️ Uruchamiaj on-demand: `docker compose run --rm scraper`
+
+volumes:
+  pgdata:
+
+

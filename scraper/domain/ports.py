@@ -1,6 +1,9 @@
 # scraper/domain/ports.py
 from datetime import datetime
 from typing import Protocol, Iterable, List, Optional
+
+from bs4 import BeautifulSoup
+
 from .models import ArticleData
 
 class HtmlFetcher(Protocol):
@@ -16,6 +19,17 @@ class ArticleRepository(Protocol):
     def exists(self, url: str) -> bool: ...
     def save(self, article: ArticleData) -> None: ...
 
-class DateParser(Protocol):
+class DateParserText(Protocol):
     name: str
     def parse(self, text: str) -> Optional[datetime]: ...
+
+
+class DateExtractor(Protocol):
+    name: str
+    def extract(self, text: BeautifulSoup) -> str: ...
+
+
+class DateFormatter(Protocol):
+    name: str
+    def parse(self, text:str) -> Optional[datetime]: ...
+

@@ -1,27 +1,18 @@
-import re
+
 from dataclasses import dataclass
 from datetime import datetime, time
-from typing import Optional, Generator, Tuple
+from typing import Optional, Generator, Tuple, Sequence
 
-import pytz
 from bs4 import BeautifulSoup
 
-from scraper.domain.ports import DateParser
-from scraper.infrastructure.parsing.date.strategies.polish_parser import PolishParser
-from scraper.infrastructure.parsing.date.strategies.polish_patterns import RX_DDMMYYYY, RX_PL_WORDS
+from scraper.domain.ports import DateParserText, DateExtractor
+from scraper.infrastructure.parsing.const import TZ, DATE_META_SELECTORS
+from scraper.infrastructure.parsing.date.strategies.polish_parser import PolishParser, RX_DDMMYYYY, RX_PL_WORDS
+
 from scraper.infrastructure.parsing.date.strategies.smart_parser import SmartParser
 
 
 
-TZ = pytz.timezone("Europe/Warsaw")
-
-DATE_META_SELECTORS: list[Tuple[str, dict[str, str]]] = [
-    ("meta", {"property": "article:published_time"}),
-    ("meta", {"name": "article:published_time"}),
-    ("meta", {"property": "og:published_time"}),
-    ("meta", {"itemprop": "datePublished"}),
-    ("meta", {"name": "pubdate"}),
-]
 
 
 def _format_output(dt: datetime) -> str:
@@ -37,7 +28,7 @@ def _format_output(dt: datetime) -> str:
 
 @dataclass
 class ParserChain:
-    parsers: tuple[DateParser, ...] = (SmartParser(), PolishParser())
+    parsers: tuple[DateParserText, ...] = (SmartParser(), PolishParser())
 
     def try_parse(self, text: str) -> Optional[str]:
         for p in self.parsers:
@@ -87,4 +78,3 @@ def extract_date_from_soup(soup: BeautifulSoup, chain: ParserChain | None = None
         if result:
             return result
     return None
-

@@ -10,3 +10,5 @@ class ArticleData:
     content_text: str
     published_at: str
     source_domain: str
+    raw_date: str
+    new:str

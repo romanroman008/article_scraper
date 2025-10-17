@@ -15,6 +15,8 @@ class JsonExporter:
                 "content_text": a.content_text,
                 "published_at": a.published_at,
                 "source_domain": a.source_domain,
+                "raw_date": a.raw_date,
+                "new": a.new,
             })
         out_path = Path(out_path)
         out_path.parent.mkdir(parents=True, exist_ok=True)

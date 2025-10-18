@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 from bs4 import BeautifulSoup
 from scraper.domain.ports import DateExtractor
-from scraper.infrastructure.parsing.date.strategies.polish_parser import RX_DDMMYYYY, RX_PL_WORDS
+from scraper.infrastructure.parsing.date.const import RX_DDMMYYYY, RX_PL_WORDS
 
 
 class RegexFallbackDateExtractor:

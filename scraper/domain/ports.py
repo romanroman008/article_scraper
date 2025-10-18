@@ -31,5 +31,5 @@ class DateExtractor(Protocol):
 
 class DateFormatter(Protocol):
     name: str
-    def parse(self, text:str) -> Optional[datetime]: ...
+    def format(self, text:str) -> Optional[datetime]: ...
 

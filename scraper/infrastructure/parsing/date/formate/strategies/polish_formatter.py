@@ -5,47 +5,63 @@ from datetime import datetime
 from typing import Optional
 import re
 import unicodedata
-import pytz
 
 PL_MONTHS = {
-    "stycznia": 1, "lutego": 2, "marca": 3, "kwietnia": 4, "maja": 5, "czerwca": 6,
-    "lipca": 7, "sierpnia": 8, "września": 9, "wrzesnia": 9,
-    "października": 10, "pazdziernika": 10, "listopada": 11, "grudnia": 12,
+    "stycznia":1,"lutego":2,"marca":3,"kwietnia":4,"maja":5,"czerwca":6,
+    "lipca":7,"sierpnia":8,"września":9,"wrzesnia":9,"października":10,"pazdziernika":10,
+    "listopada":11,"grudnia":12
 }
-RX_DDMMYYYY = re.compile(r"\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b")
-RX_PL_WORDS = re.compile(r"\b(\d{1,2})\s+([A-Za-ząćęłńóśźż]+)\s+(\d{4})\b", re.IGNORECASE)
+
+# dd.mm.yyyy [HH:MM[:SS]]
+RX_NUMERIC = re.compile(
+    r"\b(?P<d>\d{1,2})[.\-/](?P<m>\d{1,2})[.\-/](?P<y>\d{4})"
+    r"(?:[ ,T]*(?:o\s+)?"                       # separator / "o "
+    r"(?P<h>\d{1,2}):(?P<min>\d{2})(?::(?P<s>\d{2}))?)?\b",
+    re.IGNORECASE,
+)
+
+# d <miesiąc> yyyy [HH:MM[:SS]]
+RX_WORDS = re.compile(
+    r"\b(?P<d>\d{1,2})\s+(?P<mname>[A-Za-ząćęłńóśźż]+)\s+(?P<y>\d{4})"
+    r"(?:[ ,]*(?:o\s+)?"                        # separator / "o "
+    r"(?P<h>\d{1,2}):(?P<min>\d{2})(?::(?P<s>\d{2}))?)?\b",
+    re.IGNORECASE,
+)
 
 @dataclass(frozen=True)
 class PolishHardFormatter:
-    """„Twardy” formater polskich formatów: 'dd.mm.yyyy' oraz 'd <miesiąc> yyyy'.
-       Zwraca datetime NAIVE (czas = 00:00:00); polityka łańcucha doda TZ/UTC."""
+    """Parsuje polskie formaty (numeryczny i słowny) z *opcjonalnym* czasem."""
     name: str = "pl-hard"
-    tz_name: str = "Europe/Warsaw"
 
     def format(self, text: str) -> Optional[datetime]:
         if not text:
             return None
         s = unicodedata.normalize("NFKC", text).strip()
 
-        m = RX_DDMMYYYY.search(s)
+        m = RX_NUMERIC.search(s)
         if m:
-            d, mo, y = map(int, m.groups())
+            d, mo, y = int(m["d"]), int(m["m"]), int(m["y"])
+            h = int(m["h"]) if m["h"] else 0
+            mi = int(m["min"]) if m["min"] else 0
+            se = int(m["s"]) if m["s"] else 0
             try:
-                # NAIVE – łańcuch nada TZ i przerobi na UTC
-                return datetime(y, mo, d, 0, 0, 0)
+                return datetime(y, mo, d, h, mi, se)  # NAIVE – polityka nada TZ
             except ValueError:
                 return None
 
-        m = RX_PL_WORDS.search(s.lower())
+        m = RX_WORDS.search(s.lower())
         if m:
-            d = int(m.group(1))
-            month_word = m.group(2)
-            y = int(m.group(3))
-            mo = PL_MONTHS.get(month_word)
-            if mo:
-                try:
-                    return datetime(y, mo, d, 0, 0, 0)  # NAIVE
-                except ValueError:
-                    return None
+            d, y = int(m["d"]), int(m["y"])
+            mname = m["mname"]
+            mo = PL_MONTHS.get(mname)
+            if not mo:
+                return None
+            h = int(m["h"]) if m["h"] else 0
+            mi = int(m["min"]) if m["min"] else 0
+            se = int(m["s"]) if m["s"] else 0
+            try:
+                return datetime(y, mo, d, h, mi, se)  # NAIVE
+            except ValueError:
+                return None
 
         return None

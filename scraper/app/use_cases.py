@@ -49,8 +49,7 @@ class ScrapeArticlesUseCase:
                 created += 1
             except Exception as e:
                 failed += 1
-                logging.error("url=%s reason=%s", url, e)
-
+                logging.error("Issues with url: %s reason=%s", url, e)
                 continue
 
         exporter = JsonExporter()

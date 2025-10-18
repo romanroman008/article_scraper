@@ -1,9 +1,9 @@
-📰 Django Article Scraper
+📰 ## Django Article Scraper
 
 A simple Django application for scraping articles from given URLs and storing them in a PostgreSQL database.
 The collected data is accessible through the /articles/ JSON endpoint.
 
-🚀 Features
+🚀 ## Features
 
 Scrape articles from any given URL
 

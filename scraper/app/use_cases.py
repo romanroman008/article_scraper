@@ -1,12 +1,12 @@
-# scraper/app/use_cases.py
+
 import logging
-import traceback
+
 from typing import Iterable, List, Optional
 
 from requests import HTTPError
 
 from scraper.domain.ports import HtmlFetcher, Renderer, ArticleParser, ArticleRepository
-from scraper.exporters.json_exporter import JsonExporter
+
 
 
 class ScrapeArticlesUseCase:
@@ -26,16 +26,15 @@ class ScrapeArticlesUseCase:
 
     @property
     def log(self) -> logging.Logger:
-        # Nazwany logger per klasa → w formaterze zobaczysz [ScrapeArticlesUseCase]
         return logging.getLogger(type(self).__name__)
 
     def run(self, urls: Iterable[str]):
         created = skipped = failed = 0
         articles = []
 
-        # Wstępny rozmiar batcha (może być niewiadomy dla generatorów)
+
         try:
-            total = len(urls)  # type: ignore[arg-type]
+            total = len(urls)
         except Exception:
             total = None
 
@@ -56,11 +55,10 @@ class ScrapeArticlesUseCase:
                     url,
                 )
 
-                # --- (opcjonalnie) SKIP, jeśli w repo już jest  ---
-                # if self.repository.exists(url):
-                #     skipped += 1
-                #     self.log.info("Pominięto istniejący artykuł (url=%s).", url)
-                #     continue
+                if self.repository.exists(url):
+                    skipped += 1
+                    self.log.info("Pominięto istniejący artykuł (url=%s).", url)
+                    continue
 
 
                 html = self.fetcher.fetch(url)
@@ -83,7 +81,6 @@ class ScrapeArticlesUseCase:
                     rendered_html = self.renderer.render(url)
                     article = self.parser.parse(url, rendered_html)
 
-                # --- save ---
                 self.repository.save(article)
                 articles.append(article)
                 created += 1
@@ -112,15 +109,7 @@ class ScrapeArticlesUseCase:
                 self.log.error("Błąd podczas przetwarzania URL (url=%s).", url, exc_info=True)
                 continue
 
-        try:
-            exporter = JsonExporter()
-            exporter.export(articles, "out/articles.json")
-            self.log.info("Wyeksportowano artykuły do pliku (out/articles.json, count=%d).", len(articles))
-        except Exception:
-            # Eksport nie powinien blokować metryki zwrotnej – logujemy i idziemy dalej
-            self.log.error("Błąd podczas eksportu artykułów do JSON.", exc_info=True)
 
-        # --- podsumowanie ---
         self.log.info(
             "Zakończono scrapowanie (created=%d, skipped=%d, failed=%d, total=%s).",
             created,

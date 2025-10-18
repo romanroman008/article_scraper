@@ -1,4 +1,4 @@
-# scraper/infra/http_client.py
+
 import requests, os
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry

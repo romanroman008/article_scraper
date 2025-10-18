@@ -2597,3 +2597,267 @@ Schab to jedno z najpopularniejszych miês w polskiej kuchni, jednak najczêœciej 
 2025-10-18 12:05:51,036 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, title_len=68, text_len=10906, has_date=True).
 2025-10-18 12:05:51,038 INFO [ScrapeArticlesUseCase:118] Wyeksportowano artyku³y do pliku (out/articles.json, count=4).
 2025-10-18 12:05:51,039 INFO [ScrapeArticlesUseCase:124] Zakoñczono scrapowanie (created=4, skipped=0, failed=0, total=4).
+2025-10-18 10:23:31,853 DEBUG [MARKDOWN:226] Successfully imported extension module "markdown.extensions.toc".
+2025-10-18 10:23:31,853 DEBUG [MARKDOWN:182] Successfully loaded extension "markdown.extensions.toc.TocExtension".
+2025-10-18 10:23:32,180 WARNING [django.request:253] Not Found: /favicon.ico
+2025-10-18 10:23:36,533 DEBUG [MARKDOWN:226] Successfully imported extension module "markdown.extensions.toc".
+2025-10-18 10:23:36,534 DEBUG [MARKDOWN:182] Successfully loaded extension "markdown.extensions.toc.TocExtension".
+2025-10-18 10:24:11,557 DEBUG [MARKDOWN:226] Successfully imported extension module "markdown.extensions.toc".
+2025-10-18 10:24:11,558 DEBUG [MARKDOWN:182] Successfully loaded extension "markdown.extensions.toc.TocExtension".
+2025-10-18 10:24:13,618 DEBUG [MARKDOWN:226] Successfully imported extension module "markdown.extensions.toc".
+2025-10-18 10:24:13,619 DEBUG [MARKDOWN:182] Successfully loaded extension "markdown.extensions.toc.TocExtension".
+2025-10-18 10:24:30,188 DEBUG [MARKDOWN:226] Successfully imported extension module "markdown.extensions.toc".
+2025-10-18 10:24:30,188 DEBUG [MARKDOWN:182] Successfully loaded extension "markdown.extensions.toc.TocExtension".
+2025-10-18 12:30:26,857 INFO [root:30] Scraping 4 article(s)...
+2025-10-18 12:30:26,857 INFO [ScrapeArticlesUseCase:42] Rozpoczêto scrapowanie artyku³ów (liczba_url=4, min_text_len=150).
+2025-10-18 12:30:26,857 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (1/4): https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie
+2025-10-18 12:30:26,866 DEBUG [urllib3.connectionpool:1049] Starting new HTTPS connection (1): galicjaexpress.pl:443
+2025-10-18 12:30:27,477 DEBUG [urllib3.connectionpool:544] https://galicjaexpress.pl:443 "GET /ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie HTTP/1.1" 200 None
+2025-10-18 12:30:27,508 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie, domain=galicjaexpress.pl, html_len=214839).
+2025-10-18 12:30:27,544 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=69, próbka="Ford C-Max jaki silnik benzynowy wybraæ, aby zaoszczêdziæ na paliwie?").
+2025-10-18 12:30:27,545 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=standard-container-size-two mt-36 min-h-screen lg:mt-44).
+2025-10-18 12:30:27,570 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=13736, linie=190, próbka="Silniki
+Ford C-Max jaki silnik benzynowy wybraæ, aby zaoszczêdziæ na paliwie?
+Janek Kalinowski
+.
+12 paŸdziernika 2025
+Spis treœci
+Wybór silnika benzynowego do F").
+2025-10-18 12:30:27,576 DEBUG [MetaDateExtractor:48] Nie znaleziono daty w tagach meta (brak atrybutu 'content').
+2025-10-18 12:30:27,576 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=MetaDateExtractor).
+2025-10-18 12:30:27,576 DEBUG [TimeTagDateExtractor:34] Nie znaleziono wartoœci daty w tagach <time>.
+2025-10-18 12:30:27,576 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=TimeTagDateExtractor).
+2025-10-18 12:30:27,616 DEBUG [RelativeEnTextDateExtractor:124] Nie rozpoznano ¿adnej relatywnej frazy daty w treœci (EN).
+2025-10-18 12:30:27,616 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=RelativeEnTextDateExtractor).
+2025-10-18 12:30:27,646 INFO [RelativePlTextDateExtractor:135] Rozpoznano relatywn¹ frazê daty (regex='(?ixu)\\b(?P<y>\\d+)\\s*(?:rok|lata|lat)\\b', len=6, próbka="10 lat").
+2025-10-18 12:30:27,646 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=RelativePlTextDateExtractor, próbka="10 lat").
+2025-10-18 12:30:27,646 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="10 lat").
+2025-10-18 12:30:27,646 DEBUG [ISO8601ZFormatter:29] Nie rozpoznano formatu ISO8601 (próbka="10 lat").
+2025-10-18 12:30:27,653 DEBUG [DateTimeFormatterChain:45] Brak dopasowania formatu daty (formatter=iso8601z).
+2025-10-18 12:30:27,653 INFO [RelativePlFormatter:120] Rozpoznano frazê PL "10 days temu" (zwrócono utcnow-3650days).
+2025-10-18 12:30:27,653 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=relative-pl, iso="2015-10-21T10:30:27.653416").
+2025-10-18 12:30:27,653 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="21.10.2015 10:30:27").
+2025-10-18 12:30:27,653 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=69, text_len=13736, has_date=True).
+2025-10-18 12:30:27,715 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie, title_len=69, text_len=13736, has_date=True).
+2025-10-18 12:30:27,715 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (2/4): https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu
+2025-10-18 12:30:27,792 DEBUG [urllib3.connectionpool:544] https://galicjaexpress.pl:443 "GET /bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu HTTP/1.1" 200 None
+2025-10-18 12:30:27,811 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu, domain=galicjaexpress.pl, html_len=218561).
+2025-10-18 12:30:27,840 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=67, próbka="BMW E9 3.0 CS - szczegó³owe informacje o osi¹gach i historii modelu").
+2025-10-18 12:30:27,845 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=standard-container-size-two mt-36 min-h-screen lg:mt-44).
+2025-10-18 12:30:27,867 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=16351, linie=193, próbka="BMW
+BMW E9 3.0 CS - szczegó³owe informacje o osi¹gach i historii modelu
+Janek Kalinowski
+.
+10 wrzeœnia 2025
+Spis treœci
+Specyfikacje techniczne BMW E9 3.0 CS - ").
+2025-10-18 12:30:27,875 DEBUG [MetaDateExtractor:48] Nie znaleziono daty w tagach meta (brak atrybutu 'content').
+2025-10-18 12:30:27,875 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=MetaDateExtractor).
+2025-10-18 12:30:27,875 DEBUG [TimeTagDateExtractor:34] Nie znaleziono wartoœci daty w tagach <time>.
+2025-10-18 12:30:27,876 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=TimeTagDateExtractor).
+2025-10-18 12:30:27,912 DEBUG [RelativeEnTextDateExtractor:124] Nie rozpoznano ¿adnej relatywnej frazy daty w treœci (EN).
+2025-10-18 12:30:27,912 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=RelativeEnTextDateExtractor).
+2025-10-18 12:30:27,947 INFO [RelativePlTextDateExtractor:135] Rozpoznano relatywn¹ frazê daty (regex='(?ixu)\\b(?P<sec>\\d+)\\s*(?:sek(?:\\.|)|sekundy|sekund[eê]?|sekunda)\\b', len=9, próbka="2 sekundy").
+2025-10-18 12:30:27,947 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=RelativePlTextDateExtractor, próbka="2 sekundy").
+2025-10-18 12:30:27,947 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2 sekundy").
+2025-10-18 12:30:27,948 DEBUG [ISO8601ZFormatter:29] Nie rozpoznano formatu ISO8601 (próbka="2 sekundy").
+2025-10-18 12:30:27,948 DEBUG [DateTimeFormatterChain:45] Brak dopasowania formatu daty (formatter=iso8601z).
+2025-10-18 12:30:27,948 INFO [RelativePlFormatter:120] Rozpoznano frazê PL "2 seconds temu" (zwrócono utcnow-2seconds).
+2025-10-18 12:30:27,948 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=relative-pl, iso="2025-10-18T10:30:25.948934").
+2025-10-18 12:30:27,948 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="18.10.2025 10:30:25").
+2025-10-18 12:30:27,949 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=67, text_len=16351, has_date=True).
+2025-10-18 12:30:27,956 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu, title_len=67, text_len=16351, has_date=True).
+2025-10-18 12:30:27,957 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (3/4): https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa
+2025-10-18 12:30:27,958 DEBUG [urllib3.connectionpool:1049] Starting new HTTPS connection (1): take-group.github.io:443
+2025-10-18 12:30:28,447 DEBUG [urllib3.connectionpool:544] https://take-group.github.io:443 "GET /example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa HTTP/1.1" 200 2763
+2025-10-18 12:30:28,447 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, domain=take-group.github.io, html_len=11352).
+2025-10-18 12:30:28,451 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=62, próbka="Jak kroiæ pierœ z kurczaka, aby unikn¹æ suchych kawa³ków miêsa").
+2025-10-18 12:30:28,452 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=body, id=None, class=__variable_b190cc __variable_dd153e antialiased).
+2025-10-18 12:30:28,453 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=9, d³ugoœæ=0, linie=0, próbka="").
+2025-10-18 12:30:28,453 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:30:28,453 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:30:28,454 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:30:28,454 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:30:28,454 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:30:28,454 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="13.10.2025 10:00:00").
+2025-10-18 12:30:28,454 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=62, text_len=0, has_date=True).
+2025-10-18 12:30:28,454 INFO [ScrapeArticlesUseCase:77] Wywo³ano fallback renderowania (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, text_len=0 < 150).
+2025-10-18 12:30:28,455 DEBUG [asyncio:634] Using proactor: IocpProactor
+2025-10-18 12:30:42,559 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, domain=take-group.github.io, html_len=27871).
+2025-10-18 12:30:42,570 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=62, próbka="Jak kroiæ pierœ z kurczaka, aby unikn¹æ suchych kawa³ków miêsa").
+2025-10-18 12:30:42,571 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=bg-white rounded-lg shadow-lg overflow-hidden).
+2025-10-18 12:30:42,579 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=13135, linie=93, próbka="Jak kroiæ pierœ z kurczaka, aby unikn¹æ suchych kawa³ków miêsa
+13.10.2025
+Krojenie piersi z kurczaka
+mo¿e wydawaæ siê prostym zadaniem, ale niew³aœciwe techniki").
+2025-10-18 12:30:42,579 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:30:42,579 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:30:42,580 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:30:42,580 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:30:42,580 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:30:42,580 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="13.10.2025 10:00:00").
+2025-10-18 12:30:42,580 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=62, text_len=13135, has_date=True).
+2025-10-18 12:30:42,583 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, title_len=62, text_len=13135, has_date=True).
+2025-10-18 12:30:42,583 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (4/4): https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow
+2025-10-18 12:30:42,620 DEBUG [urllib3.connectionpool:544] https://take-group.github.io:443 "GET /example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow HTTP/1.1" 200 2784
+2025-10-18 12:30:42,620 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, domain=take-group.github.io, html_len=11312).
+2025-10-18 12:30:42,620 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=68, próbka="Co mo¿na zrobiæ ze schabu oprócz kotletów? 5 zaskakuj¹cych przepisów").
+2025-10-18 12:30:42,620 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=body, id=None, class=__variable_b190cc __variable_dd153e antialiased).
+2025-10-18 12:30:42,625 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=9, d³ugoœæ=0, linie=0, próbka="").
+2025-10-18 12:30:42,625 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:30:42,625 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:30:42,626 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:30:42,626 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:30:42,626 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:30:42,627 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="31.03.2025 08:00:00").
+2025-10-18 12:30:42,627 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=68, text_len=0, has_date=True).
+2025-10-18 12:30:42,627 INFO [ScrapeArticlesUseCase:77] Wywo³ano fallback renderowania (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, text_len=0 < 150).
+2025-10-18 12:30:42,627 DEBUG [asyncio:634] Using proactor: IocpProactor
+2025-10-18 12:30:44,539 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, domain=take-group.github.io, html_len=25939).
+2025-10-18 12:30:44,548 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=68, próbka="Co mo¿na zrobiæ ze schabu oprócz kotletów? 5 zaskakuj¹cych przepisów").
+2025-10-18 12:30:44,548 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=bg-white rounded-lg shadow-lg overflow-hidden).
+2025-10-18 12:30:44,565 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=10906, linie=147, próbka="Co mo¿na zrobiæ ze schabu oprócz kotletów? 5 zaskakuj¹cych przepisów
+31.03.2025
+Schab to jedno z najpopularniejszych miês w polskiej kuchni, jednak najczêœciej ").
+2025-10-18 12:30:44,565 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:30:44,565 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:30:44,565 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:30:44,565 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:30:44,566 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:30:44,566 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="31.03.2025 08:00:00").
+2025-10-18 12:30:44,566 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=68, text_len=10906, has_date=True).
+2025-10-18 12:30:44,569 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, title_len=68, text_len=10906, has_date=True).
+2025-10-18 12:30:44,569 INFO [ScrapeArticlesUseCase:118] Wyeksportowano artyku³y do pliku (out/articles.json, count=4).
+2025-10-18 12:30:44,569 INFO [ScrapeArticlesUseCase:124] Zakoñczono scrapowanie (created=4, skipped=0, failed=0, total=4).
+2025-10-18 12:35:21,060 INFO [root:30] Scraping 4 article(s)...
+2025-10-18 12:35:21,062 INFO [ScrapeArticlesUseCase:42] Rozpoczêto scrapowanie artyku³ów (liczba_url=4, min_text_len=150).
+2025-10-18 12:35:21,062 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (1/4): https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie
+2025-10-18 12:35:21,065 DEBUG [urllib3.connectionpool:1049] Starting new HTTPS connection (1): galicjaexpress.pl:443
+2025-10-18 12:35:21,686 DEBUG [urllib3.connectionpool:544] https://galicjaexpress.pl:443 "GET /ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie HTTP/1.1" 200 None
+2025-10-18 12:35:21,716 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie, domain=galicjaexpress.pl, html_len=214753).
+2025-10-18 12:35:21,745 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=69, próbka="Ford C-Max jaki silnik benzynowy wybraæ, aby zaoszczêdziæ na paliwie?").
+2025-10-18 12:35:21,745 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=standard-container-size-two mt-36 min-h-screen lg:mt-44).
+2025-10-18 12:35:21,775 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=13736, linie=190, próbka="Silniki
+Ford C-Max jaki silnik benzynowy wybraæ, aby zaoszczêdziæ na paliwie?
+Janek Kalinowski
+.
+12 paŸdziernika 2025
+Spis treœci
+Wybór silnika benzynowego do F").
+2025-10-18 12:35:21,777 DEBUG [MetaDateExtractor:48] Nie znaleziono daty w tagach meta (brak atrybutu 'content').
+2025-10-18 12:35:21,777 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=MetaDateExtractor).
+2025-10-18 12:35:21,777 DEBUG [TimeTagDateExtractor:34] Nie znaleziono wartoœci daty w tagach <time>.
+2025-10-18 12:35:21,777 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=TimeTagDateExtractor).
+2025-10-18 12:35:21,797 DEBUG [ClassBasedDateExtractor:36] Nie znaleziono tekstu daty w elementach dopasowanych przez SELECTOR.
+2025-10-18 12:35:21,797 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=ClassBasedDateExtractor).
+2025-10-18 12:35:21,802 INFO [RegexFallbackDateExtractor:35] Wyodrêbniono datê na podstawie wzorca (regex='\\b(\\d{1,2})\\s+([A-Za-z¹æê³ñóœŸ¿]+)\\s+(\\d{4})\\b', len=20, próbka="12 paŸdziernika 2025").
+2025-10-18 12:35:21,802 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=RegexFallbackDateExtractor, próbka="12 paŸdziernika 2025").
+2025-10-18 12:35:21,802 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="12 paŸdziernika 2025").
+2025-10-18 12:35:21,802 DEBUG [ISO8601ZFormatter:29] Nie rozpoznano formatu ISO8601 (próbka="12 paŸdziernika 2025").
+2025-10-18 12:35:21,802 DEBUG [DateTimeFormatterChain:45] Brak dopasowania formatu daty (formatter=iso8601z).
+2025-10-18 12:35:21,964 INFO [SmartFormatter:34] Sparsowano datê przy u¿yciu dateparser (iso="2025-10-12T00:00:00+02:00").
+2025-10-18 12:35:21,965 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=smart, iso="2025-10-12T00:00:00+02:00").
+2025-10-18 12:35:21,965 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="12.10.2025 00:00:00").
+2025-10-18 12:35:21,965 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=69, text_len=13736, has_date=True).
+2025-10-18 12:35:22,025 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie, title_len=69, text_len=13736, has_date=True).
+2025-10-18 12:35:22,025 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (2/4): https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu
+2025-10-18 12:35:22,125 DEBUG [urllib3.connectionpool:544] https://galicjaexpress.pl:443 "GET /bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu HTTP/1.1" 200 None
+2025-10-18 12:35:22,131 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu, domain=galicjaexpress.pl, html_len=218561).
+2025-10-18 12:35:22,156 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=67, próbka="BMW E9 3.0 CS - szczegó³owe informacje o osi¹gach i historii modelu").
+2025-10-18 12:35:22,156 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=standard-container-size-two mt-36 min-h-screen lg:mt-44).
+2025-10-18 12:35:22,187 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=16351, linie=193, próbka="BMW
+BMW E9 3.0 CS - szczegó³owe informacje o osi¹gach i historii modelu
+Janek Kalinowski
+.
+10 wrzeœnia 2025
+Spis treœci
+Specyfikacje techniczne BMW E9 3.0 CS - ").
+2025-10-18 12:35:22,187 DEBUG [MetaDateExtractor:48] Nie znaleziono daty w tagach meta (brak atrybutu 'content').
+2025-10-18 12:35:22,187 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=MetaDateExtractor).
+2025-10-18 12:35:22,187 DEBUG [TimeTagDateExtractor:34] Nie znaleziono wartoœci daty w tagach <time>.
+2025-10-18 12:35:22,187 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=TimeTagDateExtractor).
+2025-10-18 12:35:22,207 DEBUG [ClassBasedDateExtractor:36] Nie znaleziono tekstu daty w elementach dopasowanych przez SELECTOR.
+2025-10-18 12:35:22,207 DEBUG [DateExtractorChain:36] Brak dopasowania daty w ekstraktorze (extractor=ClassBasedDateExtractor).
+2025-10-18 12:35:22,215 INFO [RegexFallbackDateExtractor:35] Wyodrêbniono datê na podstawie wzorca (regex='\\b(\\d{1,2})\\s+([A-Za-z¹æê³ñóœŸ¿]+)\\s+(\\d{4})\\b', len=16, próbka="10 wrzeœnia 2025").
+2025-10-18 12:35:22,215 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=RegexFallbackDateExtractor, próbka="10 wrzeœnia 2025").
+2025-10-18 12:35:22,215 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="10 wrzeœnia 2025").
+2025-10-18 12:35:22,215 DEBUG [ISO8601ZFormatter:29] Nie rozpoznano formatu ISO8601 (próbka="10 wrzeœnia 2025").
+2025-10-18 12:35:22,215 DEBUG [DateTimeFormatterChain:45] Brak dopasowania formatu daty (formatter=iso8601z).
+2025-10-18 12:35:22,220 INFO [SmartFormatter:34] Sparsowano datê przy u¿yciu dateparser (iso="2025-09-10T00:00:00+02:00").
+2025-10-18 12:35:22,220 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=smart, iso="2025-09-10T00:00:00+02:00").
+2025-10-18 12:35:22,220 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="10.09.2025 00:00:00").
+2025-10-18 12:35:22,220 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=67, text_len=16351, has_date=True).
+2025-10-18 12:35:22,224 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu, title_len=67, text_len=16351, has_date=True).
+2025-10-18 12:35:22,224 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (3/4): https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa
+2025-10-18 12:35:22,225 DEBUG [urllib3.connectionpool:1049] Starting new HTTPS connection (1): take-group.github.io:443
+2025-10-18 12:35:22,811 DEBUG [urllib3.connectionpool:544] https://take-group.github.io:443 "GET /example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa HTTP/1.1" 200 2763
+2025-10-18 12:35:22,811 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, domain=take-group.github.io, html_len=11352).
+2025-10-18 12:35:22,815 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=62, próbka="Jak kroiæ pierœ z kurczaka, aby unikn¹æ suchych kawa³ków miêsa").
+2025-10-18 12:35:22,815 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=body, id=None, class=__variable_b190cc __variable_dd153e antialiased).
+2025-10-18 12:35:22,818 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=9, d³ugoœæ=0, linie=0, próbka="").
+2025-10-18 12:35:22,820 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:35:22,820 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:35:22,820 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:35:22,820 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:35:22,820 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:35:22,821 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="13.10.2025 10:00:00").
+2025-10-18 12:35:22,821 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=62, text_len=0, has_date=True).
+2025-10-18 12:35:22,821 INFO [ScrapeArticlesUseCase:77] Wywo³ano fallback renderowania (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, text_len=0 < 150).
+2025-10-18 12:35:22,821 DEBUG [asyncio:634] Using proactor: IocpProactor
+2025-10-18 12:35:24,911 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, domain=take-group.github.io, html_len=27871).
+2025-10-18 12:35:24,954 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=62, próbka="Jak kroiæ pierœ z kurczaka, aby unikn¹æ suchych kawa³ków miêsa").
+2025-10-18 12:35:24,955 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=bg-white rounded-lg shadow-lg overflow-hidden).
+2025-10-18 12:35:24,962 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=13135, linie=93, próbka="Jak kroiæ pierœ z kurczaka, aby unikn¹æ suchych kawa³ków miêsa
+13.10.2025
+Krojenie piersi z kurczaka
+mo¿e wydawaæ siê prostym zadaniem, ale niew³aœciwe techniki").
+2025-10-18 12:35:24,963 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:35:24,963 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:35:24,963 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-10-13T08:00:00.000000Z").
+2025-10-18 12:35:24,963 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:35:24,963 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-10-13T08:00:00+00:00").
+2025-10-18 12:35:24,963 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="13.10.2025 10:00:00").
+2025-10-18 12:35:24,963 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=62, text_len=13135, has_date=True).
+2025-10-18 12:35:24,968 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa, title_len=62, text_len=13135, has_date=True).
+2025-10-18 12:35:24,968 INFO [ScrapeArticlesUseCase:52] Przetwarzanie URL (4/4): https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow
+2025-10-18 12:35:25,105 DEBUG [urllib3.connectionpool:544] https://take-group.github.io:443 "GET /example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow HTTP/1.1" 200 2784
+2025-10-18 12:35:25,106 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, domain=take-group.github.io, html_len=11312).
+2025-10-18 12:35:25,108 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=68, próbka="Co mo¿na zrobiæ ze schabu oprócz kotletów? 5 zaskakuj¹cych przepisów").
+2025-10-18 12:35:25,108 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=body, id=None, class=__variable_b190cc __variable_dd153e antialiased).
+2025-10-18 12:35:25,108 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=9, d³ugoœæ=0, linie=0, próbka="").
+2025-10-18 12:35:25,108 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:35:25,108 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:35:25,108 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:35:25,108 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:35:25,108 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:35:25,108 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="31.03.2025 08:00:00").
+2025-10-18 12:35:25,108 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=68, text_len=0, has_date=True).
+2025-10-18 12:35:25,108 INFO [ScrapeArticlesUseCase:77] Wywo³ano fallback renderowania (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, text_len=0 < 150).
+2025-10-18 12:35:25,108 DEBUG [asyncio:634] Using proactor: IocpProactor
+2025-10-18 12:35:27,022 INFO [BeautifulSoupArticleParser:39] Rozpoczêto parsowanie artyku³u (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, domain=take-group.github.io, html_len=25821).
+2025-10-18 12:35:27,028 INFO [scraper.parsing_utils:20] Wybrano tytu³ z meta (strategia=meta, d³ugoœæ=68, próbka="Co mo¿na zrobiæ ze schabu oprócz kotletów? 5 zaskakuj¹cych przepisów").
+2025-10-18 12:35:27,028 INFO [scraper.parsing_utils:59] Wybrano kontener treœci (strategia=article, id=None, class=bg-white rounded-lg shadow-lg overflow-hidden).
+2025-10-18 12:35:27,044 INFO [scraper.parsing_utils:83] Przekszta³cono HTML na tekst (usuniêto_wêz³ów=1, d³ugoœæ=10906, linie=147, próbka="Co mo¿na zrobiæ ze schabu oprócz kotletów? 5 zaskakuj¹cych przepisów
+31.03.2025
+Schab to jedno z najpopularniejszych miês w polskiej kuchni, jednak najczêœciej ").
+2025-10-18 12:35:27,045 INFO [MetaDateExtractor:38] Wyodrêbniono datê z meta (tag=meta, klucze=property, d³ugoœæ=27, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:35:27,045 INFO [DateExtractorChain:29] Ekstrakcja daty zakoñczona powodzeniem (extractor=MetaDateExtractor, próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:35:27,045 DEBUG [BeautifulSoupArticleParser:57] Wydobyto tekst daty (próbka="2025-03-31T06:00:00.000000Z").
+2025-10-18 12:35:27,045 INFO [ISO8601ZFormatter:40] Sparsowano datê w formacie ISO8601 (iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:35:27,045 INFO [DateTimeFormatterChain:38] Formatowanie daty zakoñczone powodzeniem (formatter=iso8601z, iso="2025-03-31T06:00:00+00:00").
+2025-10-18 12:35:27,045 INFO [BeautifulSoupArticleParser:63] Ustalono datê publikacji (published_at="31.03.2025 08:00:00").
+2025-10-18 12:35:27,045 INFO [BeautifulSoupArticleParser:76] Zakoñczono parsowanie (title_len=68, text_len=10906, has_date=True).
+2025-10-18 12:35:27,047 INFO [ScrapeArticlesUseCase:91] Zapisano artyku³ (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow, title_len=68, text_len=10906, has_date=True).
+2025-10-18 12:35:27,047 INFO [ScrapeArticlesUseCase:118] Wyeksportowano artyku³y do pliku (out/articles.json, count=4).
+2025-10-18 12:35:27,047 INFO [ScrapeArticlesUseCase:124] Zakoñczono scrapowanie (created=4, skipped=0, failed=0, total=4).
+2025-10-18 12:56:47,222 INFO [root:29] Scraping 4 article(s)...
+2025-10-18 12:56:47,222 INFO [ScrapeArticlesUseCase:41] Rozpoczêto scrapowanie artyku³ów (liczba_url=4, min_text_len=150).
+2025-10-18 12:56:47,222 INFO [ScrapeArticlesUseCase:51] Przetwarzanie URL (1/4): https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:60] Pominiêto istniej¹cy artyku³ (url=https://galicjaexpress.pl/ford-c-max-jaki-silnik-benzynowy-wybrac-aby-zaoszczedzic-na-paliwie).
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:51] Przetwarzanie URL (2/4): https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:60] Pominiêto istniej¹cy artyku³ (url=https://galicjaexpress.pl/bmw-e9-30-cs-szczegolowe-informacje-o-osiagach-i-historii-modelu).
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:51] Przetwarzanie URL (3/4): https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:60] Pominiêto istniej¹cy artyku³ (url=https://take-group.github.io/example-blog-without-ssr/jak-kroic-piers-z-kurczaka-aby-uniknac-suchych-kawalkow-miesa).
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:51] Przetwarzanie URL (4/4): https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:60] Pominiêto istniej¹cy artyku³ (url=https://take-group.github.io/example-blog-without-ssr/co-mozna-zrobic-ze-schabu-oprocz-kotletow-5-zaskakujacych-przepisow).
+2025-10-18 12:56:47,286 INFO [ScrapeArticlesUseCase:113] Zakoñczono scrapowanie (created=0, skipped=4, failed=0, total=4).

@@ -1,4 +1,4 @@
-# scraper/infrastructure/parsing/date/extract/strategies/relative_pl_extractor.py
+
 from __future__ import annotations
 
 import logging

@@ -1,4 +1,4 @@
-# scraper/infra/parser.py
+
 import logging
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
@@ -91,10 +91,10 @@ def build_default_date_extractor_chain() -> DateExtractorChain:
     return DateExtractorChain(parsers=(
         MetaDateExtractor(),
         TimeTagDateExtractor(),
-        RelativeEnTextDateExtractor(),
-        RelativePlTextDateExtractor(),
         ClassBasedDateExtractor(),
         RegexFallbackDateExtractor(),
+        RelativeEnTextDateExtractor(),
+        RelativePlTextDateExtractor(),
     ))
 
 
@@ -102,9 +102,9 @@ def build_datetime_formatter_chain() -> DateTimeFormatterChain:
     return DateTimeFormatterChain(
         formatters=(
             ISO8601ZFormatter(),
-            RelativePlFormatter(),
-            RelativeEnFormatter(),
             SmartFormatter(),
             PolishHardFormatter(),
+            RelativePlFormatter(),
+            RelativeEnFormatter(),
         )
     )

@@ -1,11 +1,11 @@
-# scraper/infrastructure/parsing/date/html_parsers/class_based_extractor.py
+
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
 from typing import Optional
 from bs4 import BeautifulSoup
-from scraper.domain.ports import DateExtractor
+
 
 SELECTOR = '[class*="date"], [class*="time"], .post-meta, .entry-meta'
 

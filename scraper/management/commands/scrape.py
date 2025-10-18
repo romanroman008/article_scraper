@@ -1,10 +1,9 @@
-# scraper/management/commands/scrape.py
+
 import logging
 
 from django.core.management.base import BaseCommand
 
-# zainicjuj renderer, jeśli chcesz fallback JS:
-# from scraper.infra.renderer import PlaywrightRenderer
+
 from scraper.app.use_cases import ScrapeArticlesUseCase
 from scraper.infrastructure.parsing.parser import BeautifulSoupArticleParser
 from scraper.infrastructure.playwright_renderer import PlaywrightRenderer
@@ -22,7 +21,7 @@ class Command(BaseCommand):
     help = "Scrape predefined articles and store them in DB"
 
     def add_arguments(self, parser):
-        parser.add_argument("--url", action="append", help="Możesz podać wiele razy")
+        parser.add_argument("--url", action="append",  help="You can specify this option multiple times")
 
     def handle(self, *args, **opts):
         urls = opts.get("url") or DEFAULT_URLS

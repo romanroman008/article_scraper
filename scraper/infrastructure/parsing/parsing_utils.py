@@ -7,13 +7,6 @@ logger = logging.getLogger("scraper.parsing_utils")
 
 
 def pick_title(soup: BeautifulSoup) -> str:
-    """
-    Kolejność:
-      1) <meta property="og:title"> / <meta name="twitter:title">
-      2) <h1>
-      3) <title>
-      4) fallback
-    """
     og = soup.find("meta", {"property": "og:title"}) or soup.find("meta", {"name": "twitter:title"})
     if og and og.get("content"):
         title = og["content"].strip()
@@ -45,12 +38,6 @@ def pick_title(soup: BeautifulSoup) -> str:
 
 
 def pick_container(soup: BeautifulSoup):
-    """
-    Zwraca główny kontener treści:
-      1) <article>
-      2) <main>
-      3) <body>
-    """
     node = soup.select_one("article") or soup.find("main") or soup.body
     if node is not None:
         strategy = node.name if hasattr(node, "name") else "unknown"
@@ -67,9 +54,6 @@ def pick_container(soup: BeautifulSoup):
 
 
 def html_to_text(html_fragment: str) -> str:
-    """
-    Usuwa <script>/<style>/<noscript> i zwraca plain text (separator: \n).
-    """
     if not html_fragment:
         return ""
 
@@ -87,7 +71,7 @@ def html_to_text(html_fragment: str) -> str:
     return text
 
 
-# --- drobne, lokalne helpery tylko do logowania ---
+
 def _safe_attr(tag: Tag, key: str) -> Optional[str]:
     try:
         return tag.get(key)  # type: ignore[call-arg]

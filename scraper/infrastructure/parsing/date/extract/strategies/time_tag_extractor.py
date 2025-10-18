@@ -1,4 +1,4 @@
-# scraper/infrastructure/parsing/date/html_parsers/time_tag_extractor.pyfrom __future__ import annotations
+
 import logging
 from dataclasses import dataclass
 from typing import Optional

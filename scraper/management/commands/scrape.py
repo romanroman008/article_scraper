@@ -36,5 +36,5 @@ class Command(BaseCommand):
             renderer=PlaywrightRenderer(),  # lub PlaywrightRenderer()
             min_text_len=150
         )
-        stats = use_case.run(urls)
-        logging.info(f"Done. Created: {stats['created']}, Skipped: {stats['skipped']}, Failed: {stats['failed']}, Total: {total}")
+        use_case.run(urls)
+

@@ -1,7 +1,10 @@
 # scraper/infrastructure/parsing/date/extract/strategies/relative_en_extractor.py
 from __future__ import annotations
+
+import logging
 import re
-from typing import Optional
+from dataclasses import dataclass
+from typing import Optional, ClassVar
 from bs4 import BeautifulSoup
 
 REL_WITH_TIME_EN = re.compile(
@@ -71,12 +74,13 @@ YEARS_BARE_EN = re.compile(
 KEYWORDS_EN = re.compile(r"""(?ixu)\b(yesterday|today)\b""")
 JUST_NOW_EN = re.compile(r"""(?ixu)\b(just\ now|a\ moment\ ago|moments?\ ago)\b""")
 
+@dataclass(frozen=True, slots=True)
 class RelativeEnTextDateExtractor:
-    name = "relative-text-en"
-    _CONTAINER_SELECTOR = (
+    _CONTAINER_SELECTOR: str = (
         "header, time, .post-meta, .entry-meta, [class*='date'], [class*='time'], "
         "meta[name*='date'], meta[property*='date']"
     )
+    # _PATTERNS – pozostaje jak było
     _PATTERNS = [
         REL_WITH_TIME_EN,
         REL_COMPOUNDS_EN,
@@ -87,15 +91,36 @@ class RelativeEnTextDateExtractor:
         JUST_NOW_EN, KEYWORDS_EN,
     ]
 
+    @property
+    def log(self) -> logging.Logger:
+        return logging.getLogger(type(self).__name__)
+
     def extract(self, soup: BeautifulSoup) -> Optional[str]:
-        containers = soup.select(self._CONTAINER_SELECTOR) or [soup]
+        try:
+            containers = soup.select(self._CONTAINER_SELECTOR) or [soup]
+        except Exception:
+            self.log.error("Błąd podczas wyboru kontenerów (selector=%r).", self._CONTAINER_SELECTOR, exc_info=True)
+            containers = [soup]
+
         for el in containers:
-            text = (el.get_text(" ", strip=True) or "") if hasattr(el, "get_text") else ""
+            text = (el.get_text(" ", strip=True) or "")
             if not text:
                 continue
             lower = text.lower()
+
             for rx in self._PATTERNS:
-                m = rx.search(lower)
+                try:
+                    m = rx.search(lower)
+                except Exception:
+                    self.log.error("Błąd podczas dopasowania wzorca relatywnego (regex=%r).", getattr(rx, "pattern", "?"), exc_info=True)
+                    continue
+
                 if m:
-                    return m.group(0).strip()
+                    val = m.group(0).strip()
+                    self.log.info('Rozpoznano relatywną frazę daty (regex=%r, len=%d, próbka="%s").',
+                                  getattr(rx, "pattern", "?"), len(val), val[:120])
+                    return val
+
+        self.log.debug("Nie rozpoznano żadnej relatywnej frazy daty w treści (EN).")
         return None
+

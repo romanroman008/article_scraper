@@ -10,48 +10,121 @@ from scraper.exporters.json_exporter import JsonExporter
 
 
 class ScrapeArticlesUseCase:
-    def __init__(self,
-                 fetcher: HtmlFetcher,
-                 parser: ArticleParser,
-                 repository: ArticleRepository,
-                 renderer: Optional[Renderer] = None,
-                 min_text_len: int = 150):
+    def __init__(
+        self,
+        fetcher: HtmlFetcher,
+        parser: ArticleParser,
+        repository: ArticleRepository,
+        renderer: Optional[Renderer] = None,
+        min_text_len: int = 150,
+    ):
         self.fetcher = fetcher
         self.parser = parser
         self.repository = repository
         self.renderer = renderer
         self.min_text_len = min_text_len
 
-    def run(self, urls: Iterable[str]) -> dict:
-        created = 0; skipped = 0; failed = 0
+    @property
+    def log(self) -> logging.Logger:
+        # Nazwany logger per klasa → w formaterze zobaczysz [ScrapeArticlesUseCase]
+        return logging.getLogger(type(self).__name__)
+
+    def run(self, urls: Iterable[str]):
+        created = skipped = failed = 0
         articles = []
+
+        # Wstępny rozmiar batcha (może być niewiadomy dla generatorów)
+        try:
+            total = len(urls)  # type: ignore[arg-type]
+        except Exception:
+            total = None
+
+        self.log.info(
+            "Rozpoczęto scrapowanie artykułów (liczba_url=%s, min_text_len=%d).",
+            total if total is not None else "nieznana",
+            self.min_text_len,
+        )
+
         i = 0
-        total = len(urls)
         for url in urls:
-            i+=1
+            i += 1
             try:
-                logging.info(f"Scraping {i}/{total} article with url: {url}...")
+                self.log.info(
+                    "Przetwarzanie URL (%s/%s): %s",
+                    i,
+                    total if total is not None else "?",
+                    url,
+                )
+
+                # --- (opcjonalnie) SKIP, jeśli w repo już jest  ---
                 # if self.repository.exists(url):
-                #     skipped += 1; continue
+                #     skipped += 1
+                #     self.log.info("Pominięto istniejący artykuł (url=%s).", url)
+                #     continue
+
 
                 html = self.fetcher.fetch(url)
+
+
                 article = self.parser.parse(url, html)
 
 
-
-                if self.renderer and (not article.content_text or len(article.content_text) < self.min_text_len):
+                needs_render_fallback = (
+                    self.renderer is not None
+                    and (not article.content_text or len(article.content_text) < self.min_text_len)
+                )
+                if needs_render_fallback:
+                    self.log.info(
+                        "Wywołano fallback renderowania (url=%s, text_len=%d < %d).",
+                        url,
+                        len(article.content_text or ""),
+                        self.min_text_len,
+                    )
                     rendered_html = self.renderer.render(url)
                     article = self.parser.parse(url, rendered_html)
 
+                # --- save ---
                 self.repository.save(article)
                 articles.append(article)
-
                 created += 1
-            except Exception as e:
+
+                self.log.info(
+                    "Zapisano artykuł (url=%s, title_len=%d, text_len=%d, has_date=%s).",
+                    url,
+                    len(article.title or ""),
+                    len(article.content_text or ""),
+                    bool(article.published_at),
+                )
+
+            except HTTPError as e:
                 failed += 1
-                logging.error("Issues with url: %s reason=%s", url, e)
+                status = getattr(e.response, "status_code", None)
+                self.log.error(
+                    "Błąd HTTP podczas pobierania (url=%s, status=%s, reason=%s).",
+                    url,
+                    status,
+                    str(e),
+                )
                 continue
 
-        exporter = JsonExporter()
-        exporter.export(articles, "out/articles.json")
-        return {"created": created, "skipped": skipped, "failed": failed}
+            except Exception:
+                failed += 1
+                self.log.error("Błąd podczas przetwarzania URL (url=%s).", url, exc_info=True)
+                continue
+
+        try:
+            exporter = JsonExporter()
+            exporter.export(articles, "out/articles.json")
+            self.log.info("Wyeksportowano artykuły do pliku (out/articles.json, count=%d).", len(articles))
+        except Exception:
+            # Eksport nie powinien blokować metryki zwrotnej – logujemy i idziemy dalej
+            self.log.error("Błąd podczas eksportu artykułów do JSON.", exc_info=True)
+
+        # --- podsumowanie ---
+        self.log.info(
+            "Zakończono scrapowanie (created=%d, skipped=%d, failed=%d, total=%s).",
+            created,
+            skipped,
+            failed,
+            total if total is not None else i,
+        )

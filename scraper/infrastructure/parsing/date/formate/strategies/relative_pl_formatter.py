@@ -1,3 +1,4 @@
+import logging
 import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta, time
@@ -32,72 +33,96 @@ RX_PL_YEARS   = re.compile(r"(?ixu)\b(\d+)\s*(?:rok|lata|lat)(?:\s*(?:temu|wstec
 
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class RelativePlFormatter:
     name: str = "relative-pl"
 
+    @property
+    def log(self) -> logging.Logger:
+        return logging.getLogger(type(self).__name__)
+
     def format(self, text: str) -> Optional[datetime]:
         if not text:
+            self.log.debug("Pominięto formatowanie PL relative: pusty tekst wejściowy.")
             return None
-        s = text.strip().lower()
 
-        # KLUCZOWE:
-        # - do „teraz”/relatywnych używamy NAIVE UTC (freezegun nie doda offsetu),
-        # - do konstrukcji kalendarzowych budujemy AWARE przez _aware(...)
-        now = datetime.utcnow()  # NAIVE
-        # Jeśli chcesz bazować na lokalnej dacie dla fraz słownych, można też użyć:
-        # today_local = datetime.now(TZ)  # AWARE – tylko do wyciągnięcia roku/miesiąca/dnia
-        # ale dla testów zamrożonych na 16:30 nie ma różnicy; zostajemy przy 'now'.
+        try:
+            s = text.strip().lower()
+            now = datetime.utcnow()  # NAIVE
 
-        # Złożone: wczoraj/dzisiaj o HH[:MM[:SS]]
-        if RX_PL_YESTERDAY_AT.search(s):
-            t = _parse_time_at(s) or time(0, 0)
-            base = now - timedelta(days=1)
-            return _aware(datetime(base.year, base.month, base.day, t.hour, t.minute, t.second))
+            # wczoraj/dzisiaj o HH:MM
+            if RX_PL_YESTERDAY_AT.search(s):
+                t = _parse_time_at(s) or time(0, 0)
+                base = now - timedelta(days=1)
+                dt = _aware(datetime(base.year, base.month, base.day, t.hour, t.minute, t.second))
+                self.log.info('Rozpoznano frazę PL "wczoraj o ..." (iso="%s").', dt.isoformat())
+                return dt
+            if RX_PL_TODAY_AT.search(s):
+                t = _parse_time_at(s) or time(0, 0)
+                dt = _aware(datetime(now.year, now.month, now.day, t.hour, t.minute, t.second))
+                self.log.info('Rozpoznano frazę PL "dziś o ..." (iso="%s").', dt.isoformat())
+                return dt
 
-        if RX_PL_TODAY_AT.search(s):
-            t = _parse_time_at(s) or time(0, 0)
-            return _aware(datetime(now.year, now.month, now.day, t.hour, t.minute, t.second))
+            # słowne
+            if RX_PL_THIS_MORNING.search(s):
+                dt = _aware(datetime(now.year, now.month, now.day, MORNING.hour, MORNING.minute, 0))
+                self.log.info('Rozpoznano frazę PL "dziś rano" (iso="%s").', dt.isoformat())
+                return dt
+            if RX_PL_THIS_AFTERNOON.search(s):
+                dt = _aware(datetime(now.year, now.month, now.day, AFTERNOON.hour, AFTERNOON.minute, 0))
+                self.log.info('Rozpoznano frazę PL "dziś po południu" (iso="%s").', dt.isoformat())
+                return dt
+            if RX_PL_THIS_EVENING.search(s):
+                dt = _aware(datetime(now.year, now.month, now.day, EVENING.hour, EVENING.minute, 0))
+                self.log.info('Rozpoznano frazę PL "dziś wieczorem" (iso="%s").', dt.isoformat())
+                return dt
+            if RX_PL_LAST_NIGHT.search(s):
+                base = now - timedelta(days=1)
+                dt = _aware(datetime(base.year, base.month, base.day, LAST_NIGHT_TIME.hour, LAST_NIGHT_TIME.minute, 0))
+                self.log.info('Rozpoznano frazę PL "wczoraj w nocy" (iso="%s").', dt.isoformat())
+                return dt
+            if RX_PL_EARLIER_TODAY.search(s):
+                dt = _aware(datetime(now.year, now.month, now.day, EARLIER_TODAY.hour, EARLIER_TODAY.minute, 0))
+                self.log.info('Rozpoznano frazę PL "dziś wcześniej" (iso="%s").', dt.isoformat())
+                return dt
 
-        # Frazy słowne (AWARE)
-        if RX_PL_THIS_MORNING.search(s):
-            return _aware(datetime(now.year, now.month, now.day, MORNING.hour, MORNING.minute, 0))
-        if RX_PL_THIS_AFTERNOON.search(s):
-            return _aware(datetime(now.year, now.month, now.day, AFTERNOON.hour, AFTERNOON.minute, 0))
-        if RX_PL_THIS_EVENING.search(s):
-            return _aware(datetime(now.year, now.month, now.day, EVENING.hour, EVENING.minute, 0))
-        if RX_PL_LAST_NIGHT.search(s):
-            base = now - timedelta(days=1)
-            return _aware(datetime(base.year, base.month, base.day, LAST_NIGHT_TIME.hour, LAST_NIGHT_TIME.minute, 0))
-        if RX_PL_EARLIER_TODAY.search(s):
-            return _aware(datetime(now.year, now.month, now.day, EARLIER_TODAY.hour, EARLIER_TODAY.minute, 0))
+            # wczoraj/dziś bez czasu
+            if RX_PL_YESTERDAY.search(s):
+                base = now - timedelta(days=1)
+                dt = _aware(datetime(base.year, base.month, base.day, 0, 0, 0))
+                self.log.info('Rozpoznano frazę PL "wczoraj" (iso="%s").', dt.isoformat())
+                return dt
+            if RX_PL_TODAY.search(s):
+                dt = _aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+                self.log.info('Rozpoznano frazę PL "dziś" (iso="%s").', dt.isoformat())
+                return dt
 
-        # Wczoraj / Dziś (AWARE)
-        if RX_PL_YESTERDAY.search(s):
-            base = now - timedelta(days=1)
-            return _aware(datetime(base.year, base.month, base.day, 0, 0, 0))
-        if RX_PL_TODAY.search(s):
-            return _aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+            # „przed chwilą”
+            if RX_PL_JUST_NOW.search(s):
+                self.log.info('Rozpoznano frazę PL "przed chwilą" (zwrócono utcnow).')
+                return now
 
-        # „przed chwilą” itp. — NAIVE (testowe _fmt i tak zlokalizuje raz)
-        if RX_PL_JUST_NOW.search(s):
-            return now
+            # jednostki względne
+            for rx, (unit, mul) in (
+                (RX_PL_SECONDS, ("seconds", 1)),
+                (RX_PL_MINUTES, ("minutes", 1)),
+                (RX_PL_HOURS,   ("hours",   1)),
+                (RX_PL_DAYS,    ("days",    1)),
+                (RX_PL_WEEKS,   ("days",    7)),
+                (RX_PL_MONTHS,  ("days",    30)),
+                (RX_PL_YEARS,   ("days",    365)),
+            ):
+                m = rx.search(s)
+                if m:
+                    g = m.group(1) or m.group(2)
+                    n = int(g)
+                    dt = now - timedelta(**{unit: n * mul})
+                    self.log.info('Rozpoznano frazę PL "%d %s temu" (zwrócono utcnow-%d%s).', n, unit, n*mul, unit)
+                    return dt
 
-        # Jednostki (obsługa „X … temu” i „sprzed X …”)
-        for rx, (unit, mul) in (
-            (RX_PL_SECONDS, ("seconds", 1)),
-            (RX_PL_MINUTES, ("minutes", 1)),
-            (RX_PL_HOURS,   ("hours",   1)),
-            (RX_PL_DAYS,    ("days",    1)),
-            (RX_PL_WEEKS,   ("days",    7)),
-            (RX_PL_MONTHS,  ("days",    30)),
-            (RX_PL_YEARS,   ("days",    365)),
-        ):
-            m = rx.search(s)
-            if m:
-                g = m.group(1) or m.group(2)  # „sprzed X …” trafia do grupy 2
-                n = int(g)
-                kwargs = {unit: n * mul}
-                return now - timedelta(**kwargs)
+            self.log.debug("Nie rozpoznano frazy relatywnej PL w podanym tekście.")
+            return None
 
-        return None
+        except Exception:
+            self.log.error("Błąd podczas formatowania relatywnego PL.", exc_info=True)
+            return None

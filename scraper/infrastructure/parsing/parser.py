@@ -1,9 +1,12 @@
 # scraper/infra/parser.py
+import logging
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from scraper.infrastructure.parsing.date.extract.extractor_chain import DateExtractorChain
 from scraper.infrastructure.parsing.date.extract.strategies.relative_en_extractor import RelativeEnTextDateExtractor
+from scraper.infrastructure.parsing.date.extract.strategies.relative_time_pl_extractor import \
+    RelativePlTextDateExtractor
 from scraper.infrastructure.parsing.date.formate.formate_chain import DateTimeFormatterChain
 
 
@@ -25,31 +28,60 @@ from scraper.domain.models import ArticleData
 
 
 class BeautifulSoupArticleParser:
+    @property
+    def log(self) -> logging.Logger:
+        return logging.getLogger(type(self).__name__)
+
     def parse(self, url: str, html: str) -> ArticleData:
-        soup = BeautifulSoup(html, "html.parser")
-        extractor_chain = build_default_date_extractor_chain()
-        formatter_chain = build_datetime_formatter_chain()
 
-        title = pick_title(soup)
-        container = pick_container(soup)
-        content_html = str(container) if container else html
-        content_text = html_to_text(content_html)
+        try:
+            domain = urlparse(url).netloc
+            self.log.info(
+                "Rozpoczęto parsowanie artykułu (url=%s, domain=%s, html_len=%d).",
+                url, domain, len(html or "")
+            )
 
+            soup = BeautifulSoup(html, "html.parser")
 
+            extractor_chain = build_default_date_extractor_chain()
+            formatter_chain = build_datetime_formatter_chain()
 
-        raw_date = extractor_chain.extract(soup)
-        date = formatter_chain.format(raw_date)
+            title = pick_title(soup)
+            container = pick_container(soup)
 
+            content_html = str(container) if container else html
+            content_text = html_to_text(content_html)
 
+            raw_date = extractor_chain.extract(soup)
+            if raw_date:
+                self.log.debug('Wydobyto tekst daty (próbka="%s").', raw_date[:120])
+            else:
+                self.log.info("Nie ustalono tekstu daty w etapie ekstrakcji.")
 
-        return ArticleData(
-            url=url,
-            title=title,
-            content_html=content_html,
-            content_text=content_text,
-            published_at=date,
-            source_domain=urlparse(url).netloc,
-        )
+            date = formatter_chain.format(raw_date or "")
+            if date:
+                self.log.info('Ustalono datę publikacji (published_at="%s").', date)
+            else:
+                self.log.info("Nie udało się ustalić daty publikacji.")
+
+            article = ArticleData(
+                url=url,
+                title=title,
+                content_html=content_html,
+                content_text=content_text,
+                published_at=date,
+                source_domain=domain,
+            )
+
+            self.log.info(
+                "Zakończono parsowanie (title_len=%d, text_len=%d, has_date=%s).",
+                len(title or ""), len(content_text or ""), bool(date)
+            )
+            return article
+
+        except Exception:
+            self.log.error("Błąd podczas parsowania artykułu (url=%s).", url, exc_info=True)
+            raise
 
 
 
@@ -60,7 +92,7 @@ def build_default_date_extractor_chain() -> DateExtractorChain:
         MetaDateExtractor(),
         TimeTagDateExtractor(),
         RelativeEnTextDateExtractor(),
-        RelativeEnTextDateExtractor(),
+        RelativePlTextDateExtractor(),
         ClassBasedDateExtractor(),
         RegexFallbackDateExtractor(),
     ))

@@ -19,17 +19,11 @@ class ArticleRepository(Protocol):
     def exists(self, url: str) -> bool: ...
     def save(self, article: ArticleData) -> None: ...
 
-class DateParserText(Protocol):
-    name: str
-    def parse(self, text: str) -> Optional[datetime]: ...
-
 
 class DateExtractor(Protocol):
-    name: str
     def extract(self, text: BeautifulSoup) -> str: ...
 
 
 class DateFormatter(Protocol):
-    name: str
     def format(self, text:str) -> Optional[datetime]: ...
 

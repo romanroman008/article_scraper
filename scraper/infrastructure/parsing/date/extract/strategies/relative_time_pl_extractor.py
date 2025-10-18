@@ -1,6 +1,9 @@
 # scraper/infrastructure/parsing/date/extract/strategies/relative_pl_extractor.py
 from __future__ import annotations
+
+import logging
 import re
+from dataclasses import dataclass
 from typing import Optional
 from bs4 import BeautifulSoup
 
@@ -87,9 +90,9 @@ YEARS_BARE_PL = re.compile(
 KEYWORDS_PL = re.compile(r"""(?ixu)\b(wczoraj|dzis(?:iaj)?|dzi[sś])\b""")
 JUST_NOW_PL = re.compile(r"""(?ixu)\b(przed\ chwil[aą]|przed\ chwila|chwile?\ temu|przed\ momentem)\b""")
 
+@dataclass(frozen=True, slots=True)
 class RelativePlTextDateExtractor:
-    name = "relative-text-pl"
-    _CONTAINER_SELECTOR = (
+    _CONTAINER_SELECTOR: str = (
         "header, time, .post-meta, .entry-meta, [class*='date'], [class*='time'], "
         "meta[name*='date'], meta[property*='date']"
     )
@@ -103,15 +106,35 @@ class RelativePlTextDateExtractor:
         JUST_NOW_PL, KEYWORDS_PL,
     ]
 
+    @property
+    def log(self) -> logging.Logger:
+        return logging.getLogger(type(self).__name__)
+
     def extract(self, soup: BeautifulSoup) -> Optional[str]:
-        containers = soup.select(self._CONTAINER_SELECTOR) or [soup]
+        try:
+            containers = soup.select(self._CONTAINER_SELECTOR) or [soup]
+        except Exception:
+            self.log.error("Błąd podczas wyboru kontenerów (selector=%r).", self._CONTAINER_SELECTOR, exc_info=True)
+            containers = [soup]
+
         for el in containers:
-            text = (el.get_text(" ", strip=True) or "") if hasattr(el, "get_text") else ""
+            text = (el.get_text(" ", strip=True) or "")
             if not text:
                 continue
             lower = text.lower()
+
             for rx in self._PATTERNS:
-                m = rx.search(lower)
+                try:
+                    m = rx.search(lower)
+                except Exception:
+                    self.log.error("Błąd podczas dopasowania wzorca relatywnego (regex=%r).", getattr(rx, "pattern", "?"), exc_info=True)
+                    continue
+
                 if m:
-                    return m.group(0).strip()
+                    val = m.group(0).strip()
+                    self.log.info('Rozpoznano relatywną frazę daty (regex=%r, len=%d, próbka="%s").',
+                                  getattr(rx, "pattern", "?"), len(val), val[:120])
+                    return val
+
+        self.log.debug("Nie rozpoznano żadnej relatywnej frazy daty w treści (PL).")
         return None

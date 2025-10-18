@@ -140,13 +140,22 @@ LOG_LEVEL = "DEBUG" if DEBUG else "WARNING"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s %(levelname)s [%(name)s:%(lineno)d] %(message)s",
+        },
+    },
+
     "handlers": {
         "console": {
-            "class": "logging.StreamHandler"
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+
         },
         "file": {
             "class": "logging.FileHandler",
             "filename": BASE_DIR / "debug.log",
+            "formatter": "verbose",
         },
     },
     "root": {

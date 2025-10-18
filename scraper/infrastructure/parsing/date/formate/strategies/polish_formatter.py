@@ -1,5 +1,7 @@
 # infrastructure/parsing/date/formatters/polish_hard_formatter.py
 from __future__ import annotations
+
+import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
@@ -28,40 +30,60 @@ RX_WORDS = re.compile(
     re.IGNORECASE,
 )
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class PolishHardFormatter:
-    """Parsuje polskie formaty (numeryczny i słowny) z *opcjonalnym* czasem."""
     name: str = "pl-hard"
+
+    @property
+    def log(self) -> logging.Logger:
+        return logging.getLogger(type(self).__name__)
 
     def format(self, text: str) -> Optional[datetime]:
         if not text:
+            self.log.debug("Pominięto formatowanie PL: pusty tekst wejściowy.")
             return None
-        s = unicodedata.normalize("NFKC", text).strip()
 
-        m = RX_NUMERIC.search(s)
+        s = unicodedata.normalize("NFKC", str(text)).strip()
+
+        # wariant numeryczny
+        try:
+            m = RX_NUMERIC.search(s)
+        except Exception:
+            self.log.error("Błąd regex dla formatu numerycznego PL.", exc_info=True)
+            return None
+
         if m:
-            d, mo, y = int(m["d"]), int(m["m"]), int(m["y"])
-            h = int(m["h"]) if m["h"] else 0
-            mi = int(m["min"]) if m["min"] else 0
-            se = int(m["s"]) if m["s"] else 0
             try:
-                return datetime(y, mo, d, h, mi, se)  # NAIVE – polityka nada TZ
-            except ValueError:
-                return None
+                d, mo, y = int(m["d"]), int(m["m"]), int(m["y"])
+                h = int(m["h"]) if m["h"] else 0
+                mi = int(m["min"]) if m["min"] else 0
+                se = int(m["s"]) if m["s"] else 0
+                dt = datetime(y, mo, d, h, mi, se)
+                self.log.info('Sparsowano datę w formacie PL (numeryczny, iso="%s").', dt.isoformat())
+                return dt
+            except Exception:
+                self.log.debug('Nieprawidłowa data w formacie numerycznym PL (próbka="%s").', s[:60])
+                # próbujemy dalej wariant słowny
 
+        # wariant słowny
         m = RX_WORDS.search(s.lower())
         if m:
-            d, y = int(m["d"]), int(m["y"])
             mname = m["mname"]
             mo = PL_MONTHS.get(mname)
             if not mo:
+                self.log.debug('Nieznana nazwa miesiąca w formacie słownym PL (miesiąc="%s").', mname)
                 return None
-            h = int(m["h"]) if m["h"] else 0
-            mi = int(m["min"]) if m["min"] else 0
-            se = int(m["s"]) if m["s"] else 0
             try:
-                return datetime(y, mo, d, h, mi, se)  # NAIVE
-            except ValueError:
+                d, y = int(m["d"]), int(m["y"])
+                h = int(m["h"]) if m["h"] else 0
+                mi = int(m["min"]) if m["min"] else 0
+                se = int(m["s"]) if m["s"] else 0
+                dt = datetime(y, mo, d, h, mi, se)
+                self.log.info('Sparsowano datę w formacie PL (słowny, iso="%s").', dt.isoformat())
+                return dt
+            except Exception:
+                self.log.debug('Nieprawidłowa data w formacie słownym PL (próbka="%s").', s[:60])
                 return None
 
+        self.log.debug("Nie rozpoznano daty w formacie PL (numeryczny ani słowny).")
         return None

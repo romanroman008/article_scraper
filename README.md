@@ -18,8 +18,17 @@ The collected data is accessible through the `/articles/` JSON endpoint.
 
 - Python **3.11+**  
 - PostgreSQL **13+**  
+- Django **5.2.7**  
+- Django REST Framework **3.16.1**  
+- psycopg[binary] **3.2.10**  
+- python-dotenv **1.1.1**  
+- dj-database-url **3.0.1**  
+- requests **2.32.5**  
+- beautifulsoup4 **4.14.2**  
+- dateparser **1.2.2**  
+- gunicorn *(for production deployment)*  
+- whitenoise *(for serving static files in production)*  
 - *(optional)* Docker  
-
 ---
 
 ## ⚙️ **Local Installation**

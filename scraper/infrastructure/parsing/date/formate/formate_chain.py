@@ -20,12 +20,12 @@ class DateTimeFormatterChain:
     def log(self) -> logging.Logger:
         return logging.getLogger(type(self).__name__)
 
-    def format(self, text: str) -> str:
+    def format(self, text: str) -> Optional[datetime]:
         """Próbuje kolejno formatterów, aż jeden zwróci sformatowaną datę."""
         try:
             if not text or not str(text).strip():
                 self.log.debug("Pominięto formatowanie: pusty tekst wejściowy.")
-                return ""
+                return None
 
             tried: list[str] = []
             for f in self.formatters:
@@ -34,7 +34,7 @@ class DateTimeFormatterChain:
 
                 dt = f.format(text)
                 if dt is not None:
-                    out = format_to_string_with_set_datezone(dt)
+                    out = set_timezone(dt)
                     self.log.info(
                         'Formatowanie daty zakończone powodzeniem (formatter=%s, iso="%s").',
                         name,
@@ -46,15 +46,16 @@ class DateTimeFormatterChain:
 
             self.log.debug("Żaden formatter nie zwrócił wyniku (tried=%s, próbka=\"%s\").",
                            ", ".join(tried), str(text)[:80])
-            return ""
+            return None
+
 
         except Exception:
             self.log.error("Błąd podczas wykonywania łańcucha formatterów daty.", exc_info=True)
-            return ""
+            return None
 
 
 
-def format_to_string_with_set_datezone(dt: datetime) -> str:
+def set_timezone(dt: datetime) -> datetime:
 
     if dt.tzinfo is None:
         dt = TZ.localize(dt)
@@ -65,4 +66,5 @@ def format_to_string_with_set_datezone(dt: datetime) -> str:
     if dt.time() == time(0, 0):
         dt = dt.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    return dt.strftime("%d.%m.%Y %H:%M:%S")
+    return dt
+

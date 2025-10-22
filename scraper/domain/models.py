@@ -8,5 +8,5 @@ class ArticleData:
     title: str
     content_html: str
     content_text: str
-    published_at: str
+    published_at: datetime
     source_domain: str

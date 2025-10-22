@@ -12,5 +12,5 @@ psycopg[binary]==3.2.10
 gunicorn
 playwright
 whitenoise
-markdown>=3.3     # opcjonalnie, dla przeglądalnego API DRF
+markdown>=3.3
 pygments>=2.7

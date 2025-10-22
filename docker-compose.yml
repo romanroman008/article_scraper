@@ -52,7 +52,7 @@ services:
     command: bash -c "python manage.py scrape"
     #                       ^^^^^^
     # ⬅️ Upewnij się, że nazwa komendy to właśnie "scrape".
-    #    Skąd?: Twój management command w Django (app/management/commands/scrape.py).
+    #    Skąd?: Twój management command w Django (app/management/commands/scrape_articles.py).
     env_file:
       - .env
     environment:

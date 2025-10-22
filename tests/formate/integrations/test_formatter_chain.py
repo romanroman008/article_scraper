@@ -29,4 +29,4 @@ def test_chain_with_real_formatters(text, expected):
             RelativeEnFormatter(),
             SmartFormatter(),
             PolishHardFormatter(),])
-    assert chain.format(text) == expected
+    assert chain.format(text).strftime("%d.%m.%Y %H:%M:%S") == expected

@@ -5,13 +5,16 @@ services:
     image: postgres:16-alpine
     container_name: app_db
     environment:
-      # ⬅️ Zostaw domyślne lub ustaw w .env. Jeśli w .env wpiszesz wartości,
-      #    to te domyślne (po :-) nie będą użyte.
-      POSTGRES_DB: ${POSTGRES_DB:-app}         # 📌 Nazwa bazy. Skąd?: Twoja decyzja → .env
-      POSTGRES_USER: ${POSTGRES_USER:-app}     # 📌 Użytkownik bazy. Skąd?: Twoja decyzja → .env
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app} # 📌 Hasło do bazy. Skąd?: Twoja decyzja → .env (NIE commituj)
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
+      LANG: pl_PL.UTF-8
+      LC_ALL: pl_PL.UTF-8
+      TZ: Europe/Warsaw
+      POSTGRES_INITDB_ARGS: "--locale=pl_PL.UTF-8 --encoding=UTF8"
+    command: ["postgres", "-c", "datestyle=ISO,DMY"]
     volumes:
-      - pgdata:/var/lib/postgresql/data        # 📌 Miejsce na dane Postgresa (persist)
+      - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
@@ -22,7 +25,7 @@ services:
 
 
   web:
-    build: .                                   # 📌 Jeśli Dockerfile nie jest w root, zmień ścieżkę.
+    build: .
     container_name: app_web
     command: >
       sh -c "
@@ -30,29 +33,22 @@ services:
         gunicorn article_scraper.wsgi:application --bind 0.0.0.0:8000 --workers 3
       "
     env_file:
-      - .env                                   # 📌 Uzupełnij wg wzoru poniżej
+      - .env
     environment:
-      # Jeśli nie używasz DATABASE_URL w settings, możesz pominąć to i czytać POSTGRES_*.
-      # DATABASE_URL format: postgresql://USER:PASS@HOST:PORT/DBNAME
       DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@db:5432/${POSTGRES_DB:-app}}
-      #                                                                                           ^ (poprawione: jedna } na końcu)
-      # ⬅️ Skąd?: Z .env (polecam użyć dj-database-url w settings.py)
     ports:
-      - "8000:8000"                            # ⬅️ Zmień lewą stronę (host) jeśli chcesz inny port lokalny.
+      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - .:/app                                 # ⬅️ Dev: hot-reload z lokalnego katalogu. Prod: zwykle USUŃ.
+      - .:/app
     restart: unless-stopped
 
   scraper:
     build: .
     container_name: app_scraper
     command: bash -c "python manage.py scrape"
-    #                       ^^^^^^
-    # ⬅️ Upewnij się, że nazwa komendy to właśnie "scrape".
-    #    Skąd?: Twój management command w Django (app/management/commands/scrape_articles.py).
     env_file:
       - .env
     environment:

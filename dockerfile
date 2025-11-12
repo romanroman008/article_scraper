@@ -17,7 +17,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
 # ---- Kopiowanie zależności i instalacja (lepsze cache) ----
-# (jeśli nie masz requirements.txt, wygeneruj wcześniej)
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
@@ -30,9 +29,5 @@ COPY . /app
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# (Opcjonalnie) użytkownik nie-root:
-# RUN useradd -ms /bin/bash appuser && chown -R appuser:appuser /app
-# USER appuser
 
-# Domyślnie uruchamiamy przez entrypoint; właściwe polecenie przyjdzie z docker-compose (sekcja command)
 ENTRYPOINT ["/entrypoint.sh"]

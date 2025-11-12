@@ -80,7 +80,6 @@ class ScrapeArticlesUseCase:
                     )
                     rendered_html = self.renderer.render(url)
                     article = self.parser.parse(url, rendered_html)
-
                 self.repository.save(article)
                 articles.append(article)
                 created += 1
